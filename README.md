@@ -56,3 +56,16 @@ Participation in the Kubernetes community is governed by the [Kubernetes Code of
   *Due to the high-level of commitment and effort required to support production images, this will only be done once all the pre-conditions are met including:*
   - [ ] Create an on-call rotation with sufficient volunteers to provide 365/24/7 coverage
   - [ ] Ensure all licensing requirements are met
+
+
+##### NOTE
+```bash=
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.27/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.27/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+sudo apt-get update
+
+apt list -a | grep kubelet
+```
+
