@@ -1,4 +1,4 @@
-# Copyright 2020 The Kubernetes Authors.
+# Copyright 2024 The Kubernetes Authors.
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,19 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 ---
-- name: Get wins
-  win_get_url:
-    url: "{{ wins_url }}"
-    dest: "{{ kubernetes_install_path }}"
-  retries: 5
-  delay: 3
-  register: wins_download
-  until: wins_download is not failed
 
-- name: Register wins.exe
-  win_command: wins.exe srv app run --register
+- name: Unload nouveau
+  community.general.modprobe:
+    name: nouveau
+    state: absent
+  ignore_errors: true
 
-- name: Ensure that wins service is running
-  win_service:
-    name: rancher-wins
+- name: Include AMD
+  ansible.builtin.include_tasks: amd.yml
+  when: gpu_vendor == "amd"
+
+- name: Include NVIDIA
+  ansible.builtin.include_tasks: nvidia.yml
+  when: gpu_vendor == "nvidia"
