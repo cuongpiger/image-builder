@@ -2,5 +2,5 @@
 .idea/
 
 
-./k8s-test/vks/huynhtl
-./k8s-test/vks/vipt
+k8s-test/vks/huynhtl
+k8s-test/vks/vipt
