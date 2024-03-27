@@ -114,6 +114,21 @@
   retries: 5
   delay: 10
 
+- name: Install Python packages
+  ansible.builtin.pip:
+    name:
+      - pip >= 23.3.1
+      - setuptools>=65.5.0
+      - requests >= 2.25.1
+      - click >= 8.0.3
+      - vks-bootstraper >= 0.1.0
+    state: present
+    extra_args: --no-cache-dir --upgrade
+  register: pip_lock_status
+  until: pip_lock_status is not failed
+  retries: 5
+  delay: 10
+
 - name: Remove '--no-tpm --no-efivars' from nullboot post install script
   ansible.builtin.command: sed -i 's/nullbootctl --no-tpm --no-efivars/nullbootctl/' /var/lib/dpkg/info/nullboot.postinst
   when: packer_build_name is search('cvm')
